@@ -1,0 +1,96 @@
+Exercise 2b: Implementation of syntax check.
+
+• What happens when you type make clean? ---> The freshly created *.o files will be removed.
+
+• And when you type make twice in a row? ---> The version of gcc will be displayed.
+
+
+• What does make -j4 (after make clean) do (see man make)? ---> create more threads to perform the operation in parallel.
+
+3. Use the C-standard-library function strtol() (or atoi()) to convert a string to a (long)
+integer. See man 3 strtol for details.
+
+4. Use the C-standard-library function strlen() to determine the length of a string. Which
+header file do you need? -----> string.h
+
+
+
+Exercise 2c: Testing and running the program display.
+
+1. What happens when you provide an incorrect argument for each of the three arguments?
+	--> The message following will be displayed:
+
+	"Number of command-line parameters is less than four.
+	Correct syntax:
+		./display <print type> <number of times> <print character>
+
+		first parameter: <print type>: e, p or w
+  		second parameter: <number of times>: positive integer
+  		third parameter: <print character>: a single character"
+
+									
+2. Run ./display e 1500 . What happens when, during execution: ----> I had to alter the "number of times" syntax
+								     with a factor of 10. Modern processors are to quick. :-)		
+
+• you press Ctrl-C ---> the characters ".....^C......" will be displayed
+
+• you press Ctrl-Z ---> the characters " ....^Z [5]+  Stopped     ./display e 1500 ." will be displayed
+
+– what does fg stand for? See man fg ----> man fg does not exists but fg --help gives:
+	
+	"Move job to the foreground.
+    
+	Place the job identified by JOB_SPEC in the foreground, making it the
+	current job.  If JOB_SPEC is not present, the shell's notion of the
+	current job is used."
+
+– what happens when you type kill %i (instead of fg), where i is the number
+between square brackets returned by jobs? ---> This will terminate the job, whereas <fg %i> will move the selected job from "parked" to active again.
+
+
+3. Run time ./display p 1000000 .   --> 3 seconds.
+and then time ./display w 1000000 . --> 5 seconds.
+
+• which is faster? Why? ---> syntax p is faster, <printf()> buffers its output. it stores its result in a memory buffer, only calling <write> when the buffer is full.
+			     <write> has to perform the action in a loop.
+
+• what happens when you press Ctrl-C during one of these commands? ---> it instantly terminates the active job.
+
+
+
+Exercise 2d: Multitasking
+
+Start two instances of display as follows:
+What happens when you replace the ampersand (&) by a semicolon (;)? Why?
+
+./display e 1500 . & ./display e 1500 + & ---> The jobs will be performed simultaneous by the scheduler resulting in a seemingly random "++++.++.....+++++...." structure.
+./display e 1500 . ; ./display e 1500 + ; ---> The jobs will be performed in a serial manner, the second job starts after the first one is complete.
+
+
+
+Exercise 2e: Nice values and priorities.
+
+The default nice value of a task is 0. Higher nice values indicate lower priorities. We can
+increase 12 the nice value of a new process using the nice command (see man nice).
+Start three instances of display as follows
+nice -19 ./display e 1500 . & e 1500 + & nice -10 ./display e 1500 - &
+Explain what happens. ---> in the first part of the execution-time most of the "+" are echoed, in the middle part "-" and "." are echoed and in the last part only "." are echoed
+
+
+
+Exercise 2f: The printf() and write() functions
+
+Repeat the three commands above, once with the p (printf()) and once with the w (write())
+printing mode. If you don’t see differences, print more characters. One of these functions uses
+buffering. Which function is that? How do you know? How does buffering affect the speed of
+the program? ---> see the answer to question 2c, #3
+
+
+
+
+
+
+
+
+
+
