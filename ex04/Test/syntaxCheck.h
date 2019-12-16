@@ -38,6 +38,19 @@ ErrCode TestNr(char *numberOfTimes);
             3 = ERR_NR:	 incorrect number
 */
 
+ErrCode TestNr(char *niceIncr);
+/*
+  Input:          niceIcr = starting address of nice-increment parameter
+  Precondition:	  At least one integer is present from address niceIcr
+  Function:       Test whether:
+                  - string contains a number 
+                  - string does not contain additional characters
+  Postcondition:  None
+  Output:	  Error code:
+            0 = NO_ERR:	  no error
+            4 = ERR_NR:   incorrect number
+*/
+
 ErrCode TestChar(char *printChar);
 /*
   Input:          printChar = starting address of print character string
@@ -47,7 +60,7 @@ ErrCode TestChar(char *printChar);
   Postcondition:  None
   Output:	  Error code:
             0 = NO_ERR:	   no error
-            4 = ERR_CHAR:  more than one character present
+            5 = ERR_CHAR:  more than one character present
 */
 
 #endif

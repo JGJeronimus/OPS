@@ -31,6 +31,12 @@ ErrCode TestNr(char *numberOfTimes) {
   return fout;
 }
 
+// Test whether an argument contains a number:
+ErrCode TestNr(char *niceIncr){
+  ErrCode fout = NO_ERR;
+
+  return fout;
+}
 
 // Test whether an argument contains only one character:
 ErrCode TestChar(char *printChar) {
