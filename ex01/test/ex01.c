@@ -16,7 +16,8 @@ int main(int argc, char* argv[], char* envp[]) {
   int  options = 0;
   char txtfile[128] = "\0";
   bool lastLine = false;
-  int  helpPrinted = -1;
+  bool printHelp = false;
+  //helpPrinted = -1;
   
   // Set up struct option array long_options[]----> See "print_help"
   static struct option long_options[] = {
@@ -30,41 +31,40 @@ int main(int argc, char* argv[], char* envp[]) {
   // Scan the different command-line arguments and options
   
   int long_index = 0;
-  while ((options = getopt_long(argc, argv, "hf:e:v" /*"e:f:hv"*/, long_options, &long_index)) != -1) {
+  while ((options = getopt_long(argc, argv, "hf:e:v" , long_options, &long_index)) != -1) {
 
   switch(options) {
   case 'e' : lastLine = true; strcpy(txtfile, optarg);      // display the last line of a *.txt file
       break;
   case 'f' : strcpy(txtfile, optarg);                       // display the first line of a *.txt file
       break;
-  case 'h' : print_help();                  // display help:
+  case 'h' : print_help(); exit(EXIT_SUCCESS);              // display help:
       break;
-  case 'v' : helpPrinted = 1;  print_env(envp);                               // enviroment variables
+  case 'v' : print_env(envp); exit(EXIT_SUCCESS);           // enviroment variables
       break;
-  default  : print_help();                                  // If no arguments are given, print help
-    // exit(EXIT_FAILURE);                              
+  default  : print_help(); exit(EXIT_SUCCESS);              // If no arguments are given, print help
+                                           
     };
   };
 
   if(strcmp(txtfile, "\0") == 0) {
-    print_help();
-    exit(EXIT_FAILURE);
-   }
-
+     /*printf("het ligt aan regel 50\n"); */ print_help();
+     exit(EXIT_FAILURE);
+     }
     else {
     read_file(txtfile, lastLine);
-   };
+   }
   
-  if(helpPrinted == 0){
+ if(printHelp == true) {
      print_help();
-     };
+     }
   
   return 0;
   }
 
 // Print program help:
 void print_help() {
-  printf("Available program options:\n\
+  printf("\nAvailable program options:\n\
   -h --help                  Print this help and exit\n\
   -f --file <file name.txt>  Specify a text file and print its FIRST line\n\
   -e --end  <file name.txt>  Specify a text file and print its LAST line\n\
@@ -78,7 +78,7 @@ void read_file(char *fileName, bool lastLine) {
   // Verify the file's extension
   char ext[5];
   strncpy(ext, fileName+strlen(fileName)-4,5);  // Get the last 4 characters of the string + \0 !
-  if(strcmp(ext,".txt") != 0) {
+  if(strcmp(ext,".txt") != 0){
     fprintf(stderr, "\n %s:  the input file should be a text file, with the extention '.txt'\n\n", fileName);
     return;
   }

@@ -33,7 +33,7 @@ int main(void) {
   sigemptyset(&act.sa_mask);              // No signal masking during SHR execution
   
   // Install SHR:
-  sigaction(SIGINT, &act, &oldact);
+  sigaction(25, &act, &oldact);            // 25 ipv SIGINT
 
   
   
@@ -51,7 +51,6 @@ int main(void) {
   return 0;
 }
 
-
 // SHR:
 void mySigHandler(int signal) {
   letter++;
@@ -61,6 +60,7 @@ void mySigHandler(int signal) {
 
 /*  Answer to questions
     Question: What happens when you send signal number 9 instead of 25?
-    The process got killed instantly
+    The process got killed instantly, see bashline command <kill -l>
+
 */  
 

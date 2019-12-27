@@ -93,6 +93,11 @@ Exercise 3e: Check the nice value
 If the nacevalue is higher the 19 they will all get the same value of 19.
 
 
+Exercise 6a:
+How can you recognise the pipe from the output of ls -l?
+by a <p> in the first column
+
+
 
 
 

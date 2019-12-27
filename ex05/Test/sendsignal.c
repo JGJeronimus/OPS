@@ -11,25 +11,33 @@
 #include <signal.h>  // kill()
 #include <stdio.h>   // printf()
 
-#define mySigNr 25
+//#define mySigNr 25
 
-unsigned int seconds = 3;
-unsigned int sleep(unsigned int seconds);
+//unsigned int seconds = 3;
+//unsigned int sleep(unsigned int seconds);
 
 int main(int argc, char *argv[]) {
+  unsigned long int endpoint;
   if(argc != 2) {
-    printf("Please give the PID of the receiving process as an argument.\n");
-    exit(1);
+    write(2, "Please give the PID of the receiving process as an argument.\n", 62);
+    // exit(1);
   }
+  else
+    {
+    endpoint = strtoul(argv[1], NULL, 10);
+    while(1) {
+      sleep(3);
+      kill(endpoint, 25);
+      }
+    }  
   
-  // Get PID from command line:
-  pid_t PID = (pid_t) strtoul(argv[1], NULL, 10);
+ // Get PID from command line:
+ // pid_t PID = (pid_t) strtoul(argv[1], NULL, 10);
   
   // Send a signal every 3 seconds:
-  while(1) {
-    int kill(mySigNr);
-    sleep(seconds);
-  }
+  
+    
+  
   
   return 0;
 }
