@@ -16,61 +16,86 @@
 #define ESC 0x1B
 
 int main(void) {
-  int pipeP2C[2], pipeC2P[2];
-  char letter;
-  
+  int pipeP2C[2];                            // write to filter
+  int pipeC2P[2];                            // read from filter 
+  pid_t pid_parent, pid_child, pid_received; // process ID's
+  int exitInt;                               
+
   // Create two unnamed pipes:
   if(pipe(pipeP2C) == -1) {
-    perror("pipeP2C");
+    perror("\n\tError: pipeP2C not available or has failed");
     exit(1);
   }
   if(pipe(pipeC2P) == -1) {
-    perror("pipeC2P");
+    perror("\n\tError: pipeC2P not available or has failed\n");
     exit(1);
   }
   
   switch(fork()) {
     
   case -1:
-    perror("fork");
+    perror("\n\tError: The fork has failed\n");
     exit(1);
     break;
     
   case 0:  // Child
-    // Redirect stdin to pipeP2C:
-    ...;  // Close stdin of child (filter) and redirect it to the output (read) of pipeP2C
-    ...;  // Close pipeP2C input (read)
-    ...;  // Close pipeP2C output (write)
+    pid_child = getpid();
+    printf("\n\t The PID of the child process is %d\n", pid_child);
+
+    dup2(pipeP2C[0], 0);                    // Redirect stdin to pipeP2C: 
+    close(0);                               // Close stdin of child (filter)
+    //close(pipeP2C[0]);                      // Close stdin of child (filter) 
+    //dup2(pipeP2C[1], 0);                    // Redirect stdin to the output (read) of pipeP2C
+
+    close(pipeP2C[0]);                      // Close pipeP2C input (read)
+    close(pipeP2C[1]);                      // Close pipeP2C output (write)
     
     // Redirect stdout to pipeC2P:
-    ...;  // Close stdout of child (filter) and redirect it to the input (write) of pipeC2P
-    ...;  // Close pipeC2P input (read)
-    ...;  // Close pipeC2P output (write)
+    close(1);                  // Close stdout of child (filter) and redirect it to the input (write) of pipeC2P
+    close(pipeC2P[0]);         // Close pipeC2P input (read)
+    close(pipeC2P[1]);         // Close pipeC2P output (write)
     
     // Call filter (and never return):
     execl("./filter", "filter", (char*)NULL );
-    perror("filter");
+    perror("\n\tError: The filter has failed\n");
     exit(1);
-    break;
+    
     
   default:  // Parent
-    ...;  // Close the unused input (read) of pipeP2C
-    ...;  // Close the unused output (write) of pipeC2P
+    pid_parent = getpid();
+    printf("\n\tThe PID of the parent-process is %d\n", pid_parent);
+
+    close(pipeP2C[0]);                  // Close the unused input (read) of pipeP2C
+    close(pipeC2P[1]);                  // Close the unused output (write) of pipeC2P
     
-    read(0, &letter, 1);  // Read a character from stdin
+    char getChar = 'o';
+    char sendChar = 'o';
+
+
+    read(0, &getChar, 1);               // Read a character from stdin
+           
+        if(getChar != ESC) {
+          write(pipeP2C[1],&getChar, 1);    // Write char to pipeP2C
+          read(pipeC2P[0], &sendChar, 1);   // Read char from pipeC2P
+          write(1, &sendChar, 1);           // Write char to stdout
+          read(0, &getChar, 1);             // Read next char
+        }
+
+        else {
+          printf("\n\tInput 'Ctrl-[' or 'Escape' detected, child program will be terminated\n\n");
+          kill(pid_child, SIGTERM);
+          break;
+        }
+      
+      
     
-    while(letter != ESC) {
-      ...;   // Write char to pipeP2C
-      ...;   // Read char from pipeC2P
-      ...;   // Write char to stdout
-      ...;   // Read next char
-    }
-    
-    ...;  // Output (write) of pipeP2C no longer needed
-    ...;  // Input (read) of pipeC2P no longer needed
-    
+    close(pipeP2C[1]);                  // Output (write) of pipeP2C no longer needed
+    close(pipeC2P[0]);                  // Input (read) of pipeC2P no longer needed
+    //kill(pid_child, SIGTERM);
     wait(NULL);
-    break;
+    
+    pid_received = wait(&exitInt);
+    printf("\n\tThe child with PID %d has exited with status 0x%x\n", pid_received, exitInt);
   }
   return 0;
 }
