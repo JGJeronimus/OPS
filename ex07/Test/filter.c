@@ -10,6 +10,7 @@
 
 #include <unistd.h>  // read(), write()
 #include <ctype.h>   // toupper()
+#include <stdio.h>   // printf()
 
 #define ESC 0x1B
 
@@ -19,7 +20,8 @@ int main(void) {
   read(0, &letter, 1);          // read first char from stdin
   
   while(letter != ESC) {        // ESC = Ctrl-[ in shell
-    letter = toupper(letter);   // convert to upper case
+    
+    letter = toupper(letter);   // convert to lower case
     write(1, &letter, 1);       // write char to stdout
     read(0, &letter, 1);        // read next char from stdin
   }

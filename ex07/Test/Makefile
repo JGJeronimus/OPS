@@ -2,7 +2,7 @@
 
 
 # Make both programs by default:
-all: printversion filter redirect
+all: printversion filter redirect pipeP2C pipeC2P
 
 
 # Link and create binary executable
@@ -22,12 +22,20 @@ redirect: redirect.o
 redirect.o: redirect.c
 	gcc -c -Wall redirect.c
 
+# Make the necessary pipes
+pipeP2C: pipeP2C
+	mkfifo pipeP2C
+	
+pipeC2P: pipeC2P
+	mkfifo pipeC2P
 
 clean:
 	rm -f *.o
 
 cleanall: clean
 	rm -f filter redirect
+	rm pipeP2C
+	rm pipeC2P
 
 printversion:
-	@gcc --version |grep gcc
+	gcc --version |grep gcc
