@@ -1,10 +1,9 @@
-
- //*****************************************************************************
- * File:         Queue.c			                                                 *
- * Version:      1.0                                                           *
- * Date:         2020-01-02                                                    *
- * Author:       J.G. Jeronimus                                                * 
- * Description:  OPS Assignment 8: Queues				                               *
+/******************************************************************************
+ * File:         Queue.c
+ * Version:      1.2
+ * Date:         2017-10-18
+ * Author:       J. Onokiewicz, M. van der Sluys
+ * Description:  OPS exercise 5: Queues
  ******************************************************************************/
 
 

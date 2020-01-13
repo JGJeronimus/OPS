@@ -1,0 +1,4 @@
+Exercise 8b: Memory leaks and Valgrind
+How can you determine whether a memory leak is present?
+
+-after running valgrind it clearly states in the summary that 32 bytes are lost in 1 block. 1 free is missing
