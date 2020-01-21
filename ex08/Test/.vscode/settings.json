@@ -1,0 +1,10 @@
+{
+    "C_Cpp.errorSquiggles": "Disabled",
+    "files.associations": {
+        "queue.h": "c",
+        "stdio.h": "c",
+        "limits": "c",
+        "*.tcc": "c",
+        "type_traits": "c"
+    }
+}

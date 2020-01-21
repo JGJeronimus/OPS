@@ -101,3 +101,6 @@ int main(void) {
   return 0;
 }
 
+
+
+/* geen magic numbers gebruiken, liever constant define ipv nummers voor gate

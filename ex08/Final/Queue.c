@@ -65,10 +65,10 @@ data_t* backQueue(const queue_t* queue) {
 void pushQueue(queue_t* queue, data_t data) {
   node_t* newNode = (node_t*) malloc(sizeof(node_t));
   if(newNode != NULL) {
-    newNode->data = data;                               // Set data
-    newNode->nextNode = queue->lastNode->nextNode;  // New last node points to first node
-    queue->lastNode->nextNode = newNode;             // Old last node points to new last node
-    queue->lastNode = newNode;                        // Set new last-node pointer
+    newNode->data = data;                                   // Set data
+    newNode->nextNode = queue->lastNode->nextNode;          // New last node points to first node
+    queue->lastNode->nextNode = newNode;                    // Old last node points to new last node
+    queue->lastNode = newNode;                              // Set new last-node pointer
   }
 }
 
@@ -77,9 +77,9 @@ void pushQueue(queue_t* queue, data_t data) {
 void popQueue(queue_t* queue) {
   if(queue->lastNode != NULL) {
     node_t* pDelete = queue->lastNode->nextNode;
-    if(pDelete == queue->lastNode) {  // Case n=1: make queue empty:
+    if(pDelete == queue->lastNode) {                        // Case n=1: make queue empty:
       queue->lastNode = NULL;
-    } else {                          // Case n>1: point lastNode to next first node:
+    } else {                                                // Case n>1: point lastNode to next first node:
       queue->lastNode->nextNode = pDelete->nextNode;
     }
     free(pDelete);

@@ -1,10 +1,11 @@
 /******************************************************************************
- * File:         main.c
- * Version:      1.2
- * Date:         2017-10-18
- * Author:       J. Onokiewicz, M. van der Sluys
- * Description:  OPS exercise 5: Queues
- ******************************************************************************/
+* File:         main.c                                                        *
+* Version:      1.0                                                           *
+* Date:         2020-01-10                                                    *
+* Author:       J.G. Jeronimus                                                *
+* Description:  OPS Assignment 8:			                                        *
+*	              Multithreading, a shared queue, mutexes and Valgrind          *
+******************************************************************************/
 
 
 #include "Queue.h"
